@@ -10,7 +10,7 @@ namespace JellyRay;
 
 public class Plugin : BasePlugin<PluginConfiguration>, IPlugin, IHasWebPages
 {
-    public PluginConfiguration Configuration { get; set; } = new PluginConfiguration();
+    public new PluginConfiguration Configuration { get; set; } = new PluginConfiguration();
 
     private readonly ILogger<Plugin> _logger;
     private readonly IServerConfigurationManager _config;

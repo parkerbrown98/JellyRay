@@ -216,12 +216,12 @@ public class FaceProcessingService : IHostedService, IDisposable
 
 public class RecognitionBatchResult
 {
-    public Dictionary<string, List<FaceMatch>> Results { get; set; }
+    public Dictionary<string, List<FaceMatch>> Results { get; set; } = new();
 }
 
 public class FaceMatch
 {
-    public int[] Bbox { get; set; }
-    public string Match { get; set; }
+    public int[] Bbox { get; set; } = Array.Empty<int>();
+    public string Match { get; set; } = string.Empty;
     public double Score { get; set; }
 }
