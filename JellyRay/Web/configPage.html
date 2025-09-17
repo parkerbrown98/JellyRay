@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JellyRay Settings</title>
+</head>
+<body>
+    <div id="TemplateConfigPage" data-role="page" class="page type-interior pluginConfigurationPage" data-require="emby-input,emby-button,emby-select,emby-checkbox">
+        <div data-role="content">
+            <div class="content-primary">
+                <form id="TemplateConfigForm">
+                    <div class="inputContainer">
+                        <label class="inputLabel inputLabelUnfocused" for="NumFrames">Number of Frames</label>
+                        <input id="NumFrames" name="NumFrames" type="number" is="emby-input" min="0" />
+                        <div class="fieldDescription">The number of frames to analyze when paused. Higher values increase accuracy but also increase processing time.</div>
+                    </div>
+                    <div class="inputContainer">
+                        <label class="inputLabel inputLabelUnfocused" for="FrameWindowSeconds">Frame Window Seconds</label>
+                        <input id="FrameWindowSeconds" name="FrameWindowSeconds" type="number" is="emby-input" min="0" step="0.1" />
+                        <div class="fieldDescription">The number of seconds over which to spread the frames. Higher values increase accuracy but also increase processing time.</div>
+                    </div>
+                    <div class="inputContainer">
+                        <label class="inputLabel inputLabelUnfocused" for="RecognizerApiUrl">Recognizer API URL</label>
+                        <input id="RecognizerApiUrl" name="RecognizerApiUrl" type="text" is="emby-input" />
+                        <div class="fieldDescription">The URL of the self-hosted recognizer API.</div>
+                    </div>
+                    <!-- <div class="checkboxContainer checkboxContainer-withDescription">
+                        <label class="emby-checkbox-label">
+                            <input id="TrueFalseSetting" name="TrueFalseCheckBox" type="checkbox" is="emby-checkbox" />
+                            <span>A Checkbox</span>
+                        </label>
+                    </div> -->
+                    <div>
+                        <button is="emby-button" type="submit" class="raised button-submit block emby-button">
+                            <span>Save</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            var TemplateConfig = {
+                pluginId: "C2EAC02A-9691-402A-A537-AE3583E6B02B" // match your GUID
+            }
+        
+            document.querySelector('#TemplateConfigPage')
+                    .addEventListener('pageshow', function() {
+                        Dashboard.showLoadingMsg();
+                        ApiClient.getPluginConfiguration(TemplateConfig.pluginUniqueId).then(function (config) {
+                            document.querySelector('#NumFrames').value = config.NumFrames;
+                            document.querySelector('#FrameWindowSeconds').value = config.FrameWindowSeconds;
+                            document.querySelector('#RecognizerApiUrl').value = config.RecognizerApiUrl;
+                            Dashboard.hideLoadingMsg();
+                        });
+                    });
+
+            document.querySelector('#TemplateConfigForm')
+                .addEventListener('submit', function(e) {
+                    Dashboard.showLoadingMsg();
+                    ApiClient.getPluginConfiguration(TemplateConfig.pluginUniqueId).then(function (config) {
+                        config.NumFrames = document.querySelector('#NumFrames').value;
+                        config.FrameWindowSeconds = document.querySelector('#FrameWindowSeconds').value;
+                        config.RecognizerApiUrl = document.querySelector('#RecognizerApiUrl').value;
+                        ApiClient.updatePluginConfiguration(TemplateConfig.pluginUniqueId, config).then(function (result) {
+                            Dashboard.processPluginConfigurationUpdateResult(result);
+                        });
+                    });
+
+                    e.preventDefault();
+                    return false;
+                });
+        </script>
+    </div>
+</body>
+</html>

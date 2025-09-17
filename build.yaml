@@ -1,0 +1,16 @@
+---
+name: "JellyRay"
+guid: "C2EAC02A-9691-402A-A537-AE3583E6B02B"
+version: "1.0.0.0"
+targetAbi: "10.10.7.0"
+framework: "net8.0"
+overview: "Analyze videos to detect and recognize faces using an external API."
+description: >
+  JellyRay is a plugin for Jellyfin that analyzes videos to detect and recognize faces using an external API. It processes video files to identify faces, stores the results in a database, and provides an interface for users to view recognized faces during video playback.
+  The plugin includes a configuration page for setting parameters such as the number of frames to analyze, the time window for frame extraction, and the URL of the face recognition API.
+category: "Metadata"
+owner: "jellyfin"
+artifacts:
+- "JellyRay.dll"
+changelog: >
+  Initial release of JellyRay plugin.

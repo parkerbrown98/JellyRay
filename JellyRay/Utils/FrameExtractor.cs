@@ -3,6 +3,8 @@ using MediaBrowser.Controller.Entities;
 using MediaBrowser.Model.IO;
 using MediaBrowser.Model.Entities;
 
+namespace JellyRay.Utils;
+
 public class FrameExtractor
 {
   private readonly IMediaEncoder _mediaEncoder;
@@ -18,8 +20,11 @@ public class FrameExtractor
   {
     var inputPath = video.Path;
 
-    // Ensure output directory exists
-    Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
+    // Ensure output path exists
+    if (!_fileSystem.DirectoryExists(outputPath))
+    {
+      Directory.CreateDirectory(outputPath);
+    }
 
     // Extract frame
     var output = await _mediaEncoder.ExtractVideoImage(inputPath, video.Container, video.GetMediaSources(false).First(), video.GetDefaultVideoStream(), null, offset, cancellationToken);
