@@ -58,7 +58,7 @@ public class Plugin : BasePlugin<PluginConfiguration>, IPlugin, IHasWebPages
         string scriptReplace = "<script plugin=\"JellyRay\".*?></script>";
         string scriptElement =
             string.Format(
-                "<script plugin=\"JellyRay\" version=\"1.0.0.1\" src=\"{0}/JellyRay/jellyray.js\"></script>",
+                "<script plugin=\"JellyRay\" version=\"1.0.0.2\" src=\"{0}/JellyRay/jellyray.js\"></script>",
                 basePath);
 
         if (!indexContents.Contains(scriptElement))
