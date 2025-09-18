@@ -13,6 +13,7 @@
                 lastHash = hash;
             }
         } else {
+            removeOverlay();
             lastHash = hash;
         }
 
@@ -55,9 +56,10 @@
             try {
                 const res = await fetch(`/JellyRay/faces?itemId=${itemId}&ticks=${ticks}`);
                 const data = await res.json();
-                console.log("[JellyRay] Faces:", data);
+                const filtered = data.faces.filter(f => f.name && f.name.toLowerCase() !== "unknown");
+                console.log("[JellyRay] Faces:", filtered);
 
-                showOverlay(data.faces);
+                showOverlay(filtered);
             } catch (err) {
                 console.error("[JellyRay] Error fetching faces", err);
             }
@@ -82,13 +84,21 @@
         overlay.style.color = "white";
         overlay.style.borderRadius = "8px";
         overlay.style.zIndex = "9999";
+        overlay.style.display = "flex";
+        overlay.style.flexDirection = "column";
+        overlay.style.gap = "0.5em";
+        overlay.style.maxWidth = "80%";
+        overlay.style.maxHeight = "80%";
+        overlay.style.overflowY = "auto";
 
         if (!faces || faces.length === 0) {
             overlay.textContent = "No celebrities detected.";
         } else {
-            overlay.innerHTML = faces
-                .map((f) => `${f.name} (${Math.round(f.confidence * 100)}%)`)
-                .join("<br>");
+            for (const face of faces) {
+                const faceDiv = document.createElement("div");
+                faceDiv.textContent = `${face.name} (${Math.round(face.confidence * 100)}%)`;
+                overlay.appendChild(faceDiv);
+            }
         }
 
         document.body.appendChild(overlay);
