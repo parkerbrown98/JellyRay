@@ -1,0 +1,20 @@
+[
+    {
+        "category": "Metadata",
+        "guid": "C2EAC02A-9691-402A-A537-AE3583E6B02B",
+        "name": "JellyRay",
+        "description": "Analyze videos to detect and recognize faces using an external API.",
+        "owner": "jellyfin",
+        "overview": "Analyze videos to detect and recognize faces using an external API.",
+        "versions": [
+            {
+                "checksum": "43f17cec0ca7501040c1e4d2fff14fa0a780260c",
+                "changelog": "initial release",
+                "targetAbi": "10.10.7.0",
+                "sourceUrl": "https://github.com/parkerbrown98/JellyRay/releases/download/v1.0.0.0/jellyray_1.0.0.0.zip",
+                "timestamp": "2025-09-17 02:41:00",
+                "version": "1.0.0.0"
+            }
+        ]
+    }
+]
