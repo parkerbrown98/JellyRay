@@ -46,7 +46,7 @@
             document.querySelector('#TemplateConfigPage')
                     .addEventListener('pageshow', function() {
                         Dashboard.showLoadingMsg();
-                        ApiClient.getPluginConfiguration(TemplateConfig.pluginUniqueId).then(function (config) {
+                        ApiClient.getPluginConfiguration(TemplateConfig.pluginId).then(function (config) {
                             document.querySelector('#NumFrames').value = config.NumFrames;
                             document.querySelector('#FrameWindowSeconds').value = config.FrameWindowSeconds;
                             document.querySelector('#RecognizerApiUrl').value = config.RecognizerApiUrl;
@@ -57,11 +57,11 @@
             document.querySelector('#TemplateConfigForm')
                 .addEventListener('submit', function(e) {
                     Dashboard.showLoadingMsg();
-                    ApiClient.getPluginConfiguration(TemplateConfig.pluginUniqueId).then(function (config) {
+                    ApiClient.getPluginConfiguration(TemplateConfig.pluginId).then(function (config) {
                         config.NumFrames = document.querySelector('#NumFrames').value;
                         config.FrameWindowSeconds = document.querySelector('#FrameWindowSeconds').value;
                         config.RecognizerApiUrl = document.querySelector('#RecognizerApiUrl').value;
-                        ApiClient.updatePluginConfiguration(TemplateConfig.pluginUniqueId, config).then(function (result) {
+                        ApiClient.updatePluginConfiguration(TemplateConfig.pluginId, config).then(function (result) {
                             Dashboard.processPluginConfigurationUpdateResult(result);
                         });
                     });
