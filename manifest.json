@@ -14,6 +14,14 @@
                 "sourceUrl": "https://github.com/parkerbrown98/JellyRay/releases/download/v1.0.0.0/jellyray_1.0.0.0.zip",
                 "timestamp": "2025-09-17 02:41:00",
                 "version": "1.0.0.0"
+            },
+            {
+                "checksum": "9318e5505ae40ca27fc6ff0b1f915952",
+                "changelog": "Fix issue with configPage not loading correctly.",
+                "targetAbi": "10.10.7.0",
+                "sourceUrl": "https://github.com/parkerbrown98/JellyRay/releases/download/v1.0.0.1/jellyray_1.0.0.1.zip",
+                "timestamp": "2025-09-17 20:45:00",
+                "version": "1.0.0.1"
             }
         ]
     }
