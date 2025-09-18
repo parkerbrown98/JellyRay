@@ -1,6 +1,7 @@
 using System.Text.Json;
 using JellyRay.Entities;
 using JellyRay.Utils;
+using MediaBrowser.Common.Configuration;
 using MediaBrowser.Controller.Configuration;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Library;
@@ -22,6 +23,7 @@ public class FaceProcessingService : IHostedService, IDisposable
     private readonly ILogger<FaceProcessingService> _logger;
     private readonly ILoggerFactory _loggerFactory;
     private readonly IServerConfigurationManager _config;
+    private readonly IConfigurationManager _configManager;
     private readonly IHttpClientFactory _httpClientFactory;
 
     private FaceRecognitionDbContext? _dbContext;
@@ -35,6 +37,7 @@ public class FaceProcessingService : IHostedService, IDisposable
         ILogger<FaceProcessingService> logger,
         ILoggerFactory loggerFactory,
         IServerConfigurationManager config,
+        IConfigurationManager configManager,
         IHttpClientFactory httpClientFactory)
     {
         _sessionManager = sessionManager;
@@ -44,6 +47,7 @@ public class FaceProcessingService : IHostedService, IDisposable
         _loggerFactory = loggerFactory;
         _logger = loggerFactory.CreateLogger<FaceProcessingService>();
         _config = config;
+        _configManager = configManager;
         _httpClientFactory = httpClientFactory;
     }
 
@@ -63,11 +67,14 @@ public class FaceProcessingService : IHostedService, IDisposable
 
             int frameCount = 5; // default value
             double window = 10.0; // default value
+            var url = "http://localhost:5000";
 
-            if (Plugin.Instance?.Configuration != null)
+            var config = _configManager.GetConfiguration<PluginConfiguration>("JellyRay");
+            if (config != null)
             {
-                frameCount = Plugin.Instance.Configuration.NumFrames;
-                window = Plugin.Instance.Configuration.FrameWindowSeconds;
+                frameCount = config.NumFrames;
+                window = config.FrameWindowSeconds;
+                url = config.RecognizerApiUrl ?? url;
             }
 
             var timestamps = Enumerable.Range(0, frameCount)
@@ -93,7 +100,6 @@ public class FaceProcessingService : IHostedService, IDisposable
                 content.Add(new ByteArrayContent(File.ReadAllBytes(frame)), "files", Path.GetFileName(frame));
             }
 
-            var url = Plugin.Instance?.Configuration.RecognizerApiUrl ?? "http://localhost:5000";
             _logger.LogInformation($"Sending {frameFiles.Count} frames to {url}/recognize_batch");
             var response = await client.PostAsync(url + "/recognize_batch", content);
             response.EnsureSuccessStatusCode();
