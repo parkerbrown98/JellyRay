@@ -8,7 +8,7 @@
         "overview": "Analyze videos to detect and recognize faces using an external API.",
         "versions": [
             {
-                "checksum": "366eb12cf22a0430489a63bf436683af1e5bb94fefc40bdae8f7808ad67b9c7d",
+                "checksum": "7964d0b4eb137ee04754a177fb63d303",
                 "changelog": "initial release",
                 "targetAbi": "10.10.7.0",
                 "sourceUrl": "https://github.com/parkerbrown98/JellyRay/releases/download/v1.0.0.0/jellyray_1.0.0.0.zip",
