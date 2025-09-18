@@ -1,7 +1,7 @@
 ---
 name: "JellyRay"
 guid: "C2EAC02A-9691-402A-A537-AE3583E6B02B"
-version: "1.0.0.1"
+version: "1.0.0.2"
 targetAbi: "10.10.7.0"
 framework: "net8.0"
 overview: "Analyze videos to detect and recognize faces using an external API."
@@ -13,5 +13,6 @@ owner: "jellyfin"
 artifacts:
 - "JellyRay.dll"
 changelog: >
+  - Fix overlay styling, config issues
   - Fix bad id variable in configPage.html
   - Initial release of JellyRay plugin.
