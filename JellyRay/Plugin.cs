@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using JellRay.Configuration;
 using MediaBrowser.Common.Configuration;
 using MediaBrowser.Common.Plugins;
 using MediaBrowser.Controller.Configuration;
@@ -10,8 +11,6 @@ namespace JellyRay;
 
 public class Plugin : BasePlugin<PluginConfiguration>, IPlugin, IHasWebPages
 {
-    public new PluginConfiguration Configuration { get; set; } = new PluginConfiguration();
-
     private readonly ILogger<Plugin> _logger;
     private readonly IServerConfigurationManager _config;
 
@@ -106,11 +105,4 @@ public class Plugin : BasePlugin<PluginConfiguration>, IPlugin, IHasWebPages
             }
         };
     }
-}
-
-public class PluginConfiguration : BasePluginConfiguration
-{
-    public int NumFrames { get; set; } = 5;
-    public double FrameWindowSeconds { get; set; } = 5.0;
-    public string RecognizerApiUrl { get; set; } = "http://10.65.0.100:5000";
 }

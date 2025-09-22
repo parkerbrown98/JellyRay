@@ -69,12 +69,22 @@ public class FaceProcessingService : IHostedService, IDisposable
             double window = 10.0; // default value
             var url = "http://localhost:5000";
 
-            var config = _configManager.GetConfiguration<PluginConfiguration>("JellyRay");
+            var config = Plugin.Instance!.Configuration;
             if (config != null)
             {
                 frameCount = config.NumFrames;
                 window = config.FrameWindowSeconds;
                 url = config.RecognizerApiUrl ?? url;
+            }
+
+            if (!await HasResults(e.Item.Id, ticks, windowSeconds: window))
+            {
+                _logger.LogInformation($"No existing results found for item {e.Item.Id} at {seconds}s, processing facial data.");
+            }
+            else
+            {
+                _logger.LogDebug($"Existing results found for item {e.Item.Id} at {seconds}s, skipping processing.");
+                return;
             }
 
             var timestamps = Enumerable.Range(0, frameCount)
@@ -109,7 +119,7 @@ public class FaceProcessingService : IHostedService, IDisposable
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
             // Save results to DB
-            if (results != null && !await HasResults(e.Item.Id, ticks))
+            if (results != null)
             {
                 var allMatches = results.Results.Values.SelectMany(m => m);
                 await SaveResults(e.Item.Id, ticks, allMatches);
@@ -131,7 +141,7 @@ public class FaceProcessingService : IHostedService, IDisposable
         }
     }
 
-    private async Task<bool> HasResults(Guid itemId, long timestampTicks)
+    private async Task<bool> HasResults(Guid itemId, long timestampTicks, double windowSeconds = 0.1)
     {
         if (_dbContext == null)
         {
@@ -139,8 +149,8 @@ public class FaceProcessingService : IHostedService, IDisposable
         }
 
         return await _dbContext.Results.AnyAsync(r => r.ItemId == itemId &&
-            r.TimestampTicks >= timestampTicks - 0.1 * 10_000_000 &&
-            r.TimestampTicks <= timestampTicks + 0.1 * 10_000_000);
+            r.TimestampTicks >= timestampTicks - windowSeconds * 10_000_000 &&
+            r.TimestampTicks <= timestampTicks + windowSeconds * 10_000_000);
     }
 
     private async Task SaveResults(Guid itemId, long timestampTicks, IEnumerable<FaceMatch> matches)
